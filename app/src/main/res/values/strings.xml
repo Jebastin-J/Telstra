@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Telstra</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="network_error">Something went wrong!</string>
+    <string name="service_url">https://dl.dropboxusercontent.com/u/746330/facts.json</string>
+</resources>
