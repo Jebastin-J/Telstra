@@ -3,9 +3,6 @@ package com.telstra.model;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by 461495 on 11/15/2015.
- */
 public class ServiceResponse {
 
     private String title = "";
@@ -27,7 +24,7 @@ public class ServiceResponse {
         this.rows = rows;
     }
 
-    public class Rows{
+    public class Rows {
 
         private String title = "";
         private String description = "";

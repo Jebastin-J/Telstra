@@ -5,19 +5,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+import com.squareup.picasso.Picasso;
 import com.telstra.R;
 import com.telstra.framework.network.json.RequestQSingleton;
 import com.telstra.model.ServiceResponse;
 
 import java.util.List;
 
-/**
- * Created by 461495 on 11/15/2015
- */
 public class ListItemAdapter extends BaseAdapter {
 
     private Context mContext;
@@ -53,7 +52,7 @@ public class ListItemAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             viewHolder.titleTextView = (TextView) convertView.findViewById(R.id.title_txt);
             viewHolder.descriptionTextView = (TextView) convertView.findViewById(R.id.desc_txt);
-            viewHolder.imageView = (NetworkImageView) convertView.findViewById(R.id.image_view);
+            viewHolder.imageView = (ImageView) convertView.findViewById(R.id.image_view);
 
             convertView.setTag(viewHolder);
         } else {
@@ -65,38 +64,40 @@ public class ListItemAdapter extends BaseAdapter {
     }
 
     /* Fetch the image bitmap from service url */
-    private void loadImage(NetworkImageView imageView, String url)
-    {
+    private void loadImage(NetworkImageView imageView, String url) {
         ImageLoader imageLoader = RequestQSingleton.getInstance(mContext).getImageLoader();
         imageView.setImageUrl(url, imageLoader);
     }
 
     /* Notify the adapter */
-    public void refreshAdapter(List<ServiceResponse.Rows> rowsList)
-    {
+    public void refreshAdapter(List<ServiceResponse.Rows> rowsList) {
         this.rowsList = rowsList;
         notifyDataSetChanged();
     }
 
     /* Set the view and initialize the data*/
-    private void initView(ViewHolder viewHolder, ServiceResponse.Rows rows)
-    {
-        if(viewHolder != null && rows != null)
-        {
-            if(rows.getTitle() != null)
+    private void initView(ViewHolder viewHolder, ServiceResponse.Rows rows) {
+        if (viewHolder != null && rows != null) {
+            if (rows.getTitle() != null)
                 viewHolder.titleTextView.setText(rows.getTitle());
             else
                 viewHolder.titleTextView.setText("");
 
-            if(rows.getDescription() != null)
+            if (rows.getDescription() != null)
                 viewHolder.descriptionTextView.setText(rows.getDescription());
             else
                 viewHolder.descriptionTextView.setText("");
 
-            if(rows.getImageHref() != null)
-                loadImage(viewHolder.imageView, rows.getImageHref());
-            else
-                loadImage(viewHolder.imageView, "");
+            // Validate the miage url and load the images
+            if (rows.getImageHref() != null && rows.getImageHref().trim().length() > 0) {
+                Picasso.with(mContext)
+                        .load(rows.getImageHref())
+                        .placeholder(R.mipmap.loadig_image)
+                        .error(R.mipmap.error_image)
+                        .into(viewHolder.imageView);
+            } else {
+                viewHolder.imageView.setImageResource(R.mipmap.error_image);
+            }
         }
     }
 
@@ -104,6 +105,6 @@ public class ListItemAdapter extends BaseAdapter {
     static class ViewHolder {
         TextView titleTextView;
         TextView descriptionTextView;
-        NetworkImageView imageView;
+        ImageView imageView;
     }
 }

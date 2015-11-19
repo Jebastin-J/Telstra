@@ -11,9 +11,6 @@ import com.telstra.framework.network.RequestType;
 import com.telstra.framework.network.json.JSONRequest;
 import com.telstra.model.ServiceResponse;
 
-/**
- * Created by 461495 on 11/15/2015.
- */
 public class ServiceController {
     private Context mContext = null;
     private JSONRequest<Object, Object> mJsonRequest = null;
